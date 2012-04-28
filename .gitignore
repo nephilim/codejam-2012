@@ -1,0 +1,11 @@
+.*
+*~
+!.gitignore
+*.bak
+*.class
+*.swp
+*.log 
+
+project/**
+!project/plugins.sbt
+target/
