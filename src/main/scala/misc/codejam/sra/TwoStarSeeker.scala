@@ -2,16 +2,16 @@ package misc.codejam.sra
 
 class KingomAnalyzer(val levelInfos:List[LevelInfo]) {
 
+
 	def findShortestAll2StarCount():Int = {
 		// find 2star
 		var currentStar:Int = 0;
 		var gamePlayCount:Int = 0;
-		
-		while ( levelInfos.filter( _.isPlayed == false ).size > 0 ) {
+		while ( levelInfos.filter( _.isDone == false ).size > 0 ) {
 		var levelInfo:LevelInfo = findPossibleLevel(currentStar, 2, true);
 		if (levelInfo != null) {
 			currentStar = currentStar + 2;
-			levelInfo.isPlayed = true;
+			levelInfo.isDone = true;
 		} else {
 			levelInfo = findPossibleLevel(currentStar, 1, false);
 			if (levelInfo != null) {
@@ -42,7 +42,7 @@ class KingomAnalyzer(val levelInfos:List[LevelInfo]) {
 		//Console.println("%d to reward %d".format(currentStar,rewardStar, filter));
 		var target:List[LevelInfo] = null;
 		if ( filter ) {
-		  target = levelInfos.filter( _.isPlayed == false );
+		  target = levelInfos.filter( _.isDone == false );
 		} 
 		else {
 		  target = levelInfos;
