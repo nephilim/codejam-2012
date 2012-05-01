@@ -6,7 +6,7 @@ object KingdomRush extends App{
   
 	import scala.io.Source._
 	
-	val caseReader = new KingdomRushCaseReader("B-test-attempt.in");
+	val caseReader = new KingdomRushCaseReader("B-small-practice.in");
 
 	var	total:Int = caseReader.headLine.toInt		//테스트 케이스 총 수  
 	

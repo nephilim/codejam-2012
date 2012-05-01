@@ -2,47 +2,51 @@ package misc.codejam.sra
 
 class KingomAnalyzer(val levelInfos:List[LevelInfo]) {
 
-
+	type StarCount = Int 
+	var current:StarCount = 0;
+	
 	def findShortestAll2StarCount():Int = {
 		// find 2star
-		var currentStar:Int = 0;
+		
 		var gamePlayCount:Int = 0;
-		while ( levelInfos.filter( _.isDone == false ).size > 0 ) {
-		var levelInfo:LevelInfo = findPossibleLevel(currentStar, 2, true);
-		if (levelInfo != null) {
-			currentStar = currentStar + 2;
-			levelInfo.isDone = true;
-		} else {
-			levelInfo = findPossibleLevel(currentStar, 1, false);
-			if (levelInfo != null) {
-			  currentStar = currentStar + 1;
-			} else {
-			  return -1;
-//			  levelInfo = findPossibleLevel(currentStar, 2, false);
-//			  if ( levelInfo != null) {
-//			    currentStar = currentStar + 2;
-//			  }else {
-//			  	levelInfo = findPossibleLevel(currentStar, 1, false);
-//				  if ( levelInfo != null) {
-//				    currentStar = currentStar + 1;
-//				  } else {
-//					  return -1;
-//				  }
-//			  }
-			}
+		while ( levelInfos.filter( _.prevStarLevel == StarLevel.NotFished ).size > 0 ) {
+		var result = findLevelAndPlay(StarLevel.Two, true);
+		result match {
+		  case None => {
+			  result = findLevelAndPlay(StarLevel.One, false);
+			  result match {
+			    case Some(levelInfo) => 
+			    case None => return -1
+			  }
+		  }
+		  case _ =>
 		}
-		Console.println(currentStar, levelInfo);
 		gamePlayCount = gamePlayCount +1;
 		}
 		gamePlayCount;
 	}
 	
-	// -1 when there is no level
-	def findPossibleLevel(currentStar:Int, rewardStar:Int, filter:Boolean):LevelInfo = {
+	def findLevelAndPlay(goal:StarLevel.Value, filter:Boolean):Option[LevelInfo] = {
+		val result = findLevel(current, goal, filter);
+		result match {
+		  case Some(levelInfo) => {
+		    current = current + goal.id;
+			// bonus
+			if ( goal == StarLevel.Two && levelInfo.prevStarLevel == StarLevel.One) {
+			  current = current + StarLevel.One.id
+			}
+			levelInfo.prevStarLevel = goal;
+		  } 
+		  case _ => 
+		}
+		result
+	}
+	
+	def findLevel(currentStar:Int, goal:StarLevel.Value, filter:Boolean):Option[LevelInfo] = {
 		//Console.println("%d to reward %d".format(currentStar,rewardStar, filter));
 		var target:List[LevelInfo] = null;
 		if ( filter ) {
-		  target = levelInfos.filter( _.isDone == false );
+		  target = levelInfos.filter( _.prevStarLevel == StarLevel.NotFished );
 		} 
 		else {
 		  target = levelInfos;
@@ -50,14 +54,14 @@ class KingomAnalyzer(val levelInfos:List[LevelInfo]) {
 		
 		for ( levelInfo <- target ) {
 		  var compareTo = levelInfo.twoStar;
-		  if( rewardStar == 1) {
+		  if( goal == StarLevel.One) {
 		    compareTo = levelInfo.oneStar;
 		  }
 		  if( currentStar >= compareTo ) {
-			return levelInfo;
+			return Some(levelInfo);
 		  } 
 		} 
-		return null;
+		None;
 	}
 
 }

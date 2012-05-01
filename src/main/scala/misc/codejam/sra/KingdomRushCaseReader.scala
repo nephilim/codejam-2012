@@ -22,7 +22,7 @@ class KingdomRushCaseReader(resourcePath: String)
 
     for (idx <- 1 to totalLevel) {
       val Array(oneStar, twoStar) = lines.next.split(" ")
-      val levelInfo = new LevelInfo(idx, oneStar.toInt, twoStar.toInt, false)
+      val levelInfo = new LevelInfo(idx, oneStar.toInt, twoStar.toInt, StarLevel.NotFished)
       levelInfos+= levelInfo
     }
     levelInfos.toList
