@@ -18,3 +18,6 @@ object Combinator {
     }}
 }
 
+object Permutator {
+  
+}
