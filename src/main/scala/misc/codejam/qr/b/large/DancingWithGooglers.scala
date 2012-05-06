@@ -4,8 +4,6 @@ import java.io.File
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
-import misc.codejam.b.large.SurprisingConditionException
-
 object DancingWithGooglers extends App {
 	import scala.io.Source
 	
