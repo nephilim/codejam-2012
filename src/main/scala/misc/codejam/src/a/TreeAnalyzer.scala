@@ -2,9 +2,17 @@ package misc.codejam.src.a
 import misc.codejam.common.Combinator
 import scala.collection.mutable.ListBuffer
 
+object PathStatus extends Enumeration {
+	type PathStatus = Value
+	val Finding, Reached, Changed, Unreachable = Value
+}
+
+class Path(val leafs:List[Leaf],var status:PathStatus.Value) 
+
 class TreeAnalyzer(val clazzes: Map[Int, Leaf]) {
-  type Path = List[Leaf]
-  private def _pathFinder(start: Leaf, dest: Leaf): List[Path] = {
+  import misc.codejam.src.a.PathStatus._
+  
+  private def _pathFinder(start: Leaf, dest: Leaf): List[List[Leaf]] = {
     if (start.id == dest.id) return List(Nil)
     val accessibleIds: List[Int] = start.accessibleIds.toList
     accessibleIds match {
@@ -16,7 +24,40 @@ class TreeAnalyzer(val clazzes: Map[Int, Leaf]) {
       }
     }
   }
-    
+  
+//  private def _pathFinder2(paths:ListBuffer[Path], dest: Leaf) = {
+//    paths.map( path => {
+//      appendNexts(paths, path, dest)
+//    }) 
+//    if (paths.size == 0 || paths.forall( _.status != PathStatus.Reached)) { 
+//    	_pathFinder2(paths, dest)
+//    }
+//  }
+//  
+//  def appendNexts(pathList:ListBuffer[Path], path:Path, dest:Leaf)= {
+//    if ( path.status != PathStatus.Reached ) {
+//	  val nextIds: List[Int] = path.leafs.last.accessibleIds.toList
+//	  nextIds match { 
+//    	  case Nil => 
+//    	    path.status = PathStatus.Unreachable
+//    	    deletePath(pathList, path)
+//    	  case _ => 
+//    	    path.status = PathStatus.Changed
+//    	    nextIds.map( (id) => { 
+//    		  val leaf = clazzes(id)
+//    		  val newPath = new Path(leaf::path.leafs, PathStatus.Finding)
+//    		  pathList += newPath
+//    		  if ( leaf == dest ) newPath.status = PathStatus.Reached 
+//    	    })
+//    	    deletePath(pathList, path)
+//	  }}
+//  }
+//  
+//  def deletePath(pathList:ListBuffer[Path], path:Path) = {
+//	  val idx = pathList.indexOf(path)
+//	  pathList.remove(idx)
+//  }
+  
   def pathFinder(start: Leaf, dest: Leaf): List[List[Leaf]] = {
 	  val paths:List[List[Leaf]] = _pathFinder(start,dest);
 	  paths.filter( (path) => 
