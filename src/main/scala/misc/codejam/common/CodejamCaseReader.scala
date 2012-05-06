@@ -3,7 +3,7 @@ import scala.io.Source._
 import scala.io.Source
 
 abstract class CodejamCaseReader[T](val filePath:String) {
-	type ChunkType <: Iterable[T]
+	type ChunkType
 	protected val source = fromURL(getClass.getResource(filePath))
 	protected val lines = source.getLines()
 	
