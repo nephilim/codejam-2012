@@ -6,21 +6,21 @@ import misc.codejam.common._
 // todo : resource path에 pattern matching + implicit type conversion 활용
 // pre-initializing
 class ClassInfoReader(resourcePath: String)
-  extends CodejamCaseReader[Leaf](resourcePath)
+  extends CodejamCaseReader[Claz](resourcePath)
   with Headline {
 
   // chunk 처리용 type 선언
-  type ChunkType = Map[Int, Leaf]
+  type ChunkType = Map[Int, Claz]
 
   override val headLine = lines.next
 
-  override def readNext(): Map[Int, Leaf] = {
+  override def readNext(): Map[Int, Claz] = {
     val totalClass = lines.next.toInt
     require(totalClass > 0)
 
-    val mutableMap = scala.collection.mutable.Map[Int, Leaf]()
+    val mutableMap = scala.collection.mutable.Map[Int, Claz]()
     for (idx <- 1 to totalClass) {
-      val info = Tuple2(idx, new Leaf(idx, new ListBuffer(), new ListBuffer()))
+      val info = Tuple2(idx, new Claz(idx, new ListBuffer(), new ListBuffer()))
       //      Console.println(info)
       mutableMap += info
     }

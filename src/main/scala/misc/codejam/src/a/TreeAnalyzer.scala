@@ -7,23 +7,23 @@ object PathStatus extends Enumeration {
 	val Finding, Reached, Changed, Unreachable = Value
 }
 
-class Path(val leafs:List[Leaf],var status:PathStatus.Value) 
+class Path(val leafs:List[Claz],var status:PathStatus.Value) 
 
-class TreeAnalyzer(val clazzes: Map[Int, Leaf]) {
+class TreeAnalyzer(val clazzes: Map[Int, Claz]) {
   import misc.codejam.src.a.PathStatus._
   
-  private def _pathFinder(start: Leaf, dest: Leaf): List[List[Leaf]] = {
+  type ClazPath = List[Claz]
+  private def _pathFinder(start: Claz, dest: Claz): List[ClazPath] = {
     if (start.id == dest.id) return List(Nil)
-    val accessibleIds: List[Int] = start.accessibleIds.toList
-    accessibleIds match {
+    val parentIds: List[Int] = start.accessibleIds.toList
+    parentIds match {
       case Nil => List(Nil)
       case list: List[Int] => {
         list.flatMap(id => {
           _pathFinder(clazzes(id), dest).map(clazzes(id) :: _)
         })
       }
-    }
-  }
+  }}
   
 //  private def _pathFinder2(paths:ListBuffer[Path], dest: Leaf) = {
 //    paths.map( path => {
@@ -58,16 +58,16 @@ class TreeAnalyzer(val clazzes: Map[Int, Leaf]) {
 //	  pathList.remove(idx)
 //  }
   
-  def pathFinder(start: Leaf, dest: Leaf): List[List[Leaf]] = {
-	  val paths:List[List[Leaf]] = _pathFinder(start,dest);
+  def pathFinder(start: Claz, dest: Claz): List[ClazPath] = {
+	  val paths:List[ClazPath] = _pathFinder(start,dest);
 	  paths.filter( (path) => 
 	    path !=Nil && path.last.id == dest.id )
   }
   
-  def mutipleParents: List[Leaf] = {
+  def mutipleParents: List[Claz] = {
     clazzes.values.filter(_.accessibleIds.size > 1).toList
   }
-  def mutipleChilds: List[Leaf] = {
+  def mutipleChilds: List[Claz] = {
     clazzes.values.filter(_.referBy.size > 1).toList
   }
 }

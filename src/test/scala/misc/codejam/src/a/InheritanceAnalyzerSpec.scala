@@ -8,11 +8,11 @@ import scala.collection.mutable.ListBuffer
 class PathFinderSpec extends Spec {
   describe("Pathfinder should return all available paths") {
     it("Find all paths from leaf1 to leaf4") {
-        val leaf1 = new Leaf(1,new ListBuffer(),new ListBuffer());
-        val leaf2 = new Leaf(2,new ListBuffer(),new ListBuffer());
-        val leaf3 = new Leaf(3,new ListBuffer(),new ListBuffer());
-        val leaf4 = new Leaf(4,new ListBuffer(),new ListBuffer());
-        val leaf5 = new Leaf(5,new ListBuffer(),new ListBuffer());
+        val leaf1 = new Claz(1,new ListBuffer(),new ListBuffer());
+        val leaf2 = new Claz(2,new ListBuffer(),new ListBuffer());
+        val leaf3 = new Claz(3,new ListBuffer(),new ListBuffer());
+        val leaf4 = new Claz(4,new ListBuffer(),new ListBuffer());
+        val leaf5 = new Claz(5,new ListBuffer(),new ListBuffer());
         
         leaf1.accessibleIds += 2
         leaf1.accessibleIds += 3
